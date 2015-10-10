@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class Neuron 
 {
-	private static Random rand = new Random();
+	private static Random random = new Random();
 	private int inputCount;
 	private Vector<Double> inputWeights = new Vector<Double>();
 
@@ -60,7 +60,7 @@ public class Neuron
 
 	private float randomClamped()
 	{
-		return (float) ((rand.nextDouble() * (1.0-(-1.0))) - 1.0);
+		return (float) ((random.nextDouble() * (1.0-(-1.0))) - 1.0);
 	}
 
 }
