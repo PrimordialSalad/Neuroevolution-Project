@@ -66,7 +66,6 @@ public class NeuralNetwork
 
 	public void setWeights(Vector<Double> newWeights)
 	{
-		System.out.println("updating...");
 		Vector<Double> segment = new Vector<Double>();
 
 		for(int i = 0; i < neuralNetwork.size(); i++)

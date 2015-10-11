@@ -21,7 +21,6 @@ public class Neuron
 
 	public void setWeights(Vector<Double> newInputWeights)
 	{
-		System.out.println("Reciving: " + newInputWeights);
 		for(int i = 0; i < inputWeights.size(); i++)
 		{
 			inputWeights.set(i, newInputWeights.get(i));

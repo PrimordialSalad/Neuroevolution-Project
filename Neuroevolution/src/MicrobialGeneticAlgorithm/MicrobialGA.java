@@ -18,7 +18,7 @@ public class MicrobialGA
 	private double[] trialFitnessScore = {0, 0, 0};
 	private int sessionCount;
 	private int stageCount;
-	private final int MAX_SESSION_COUNT = 3;
+	private final int MAX_SESSION_COUNT = 2;
 
 	public MicrobialGA(int setPopulationCount, int setInputCount, int setOutputCount, int setHiddenLayerCount, int setNeuronsPerHiddenLayer)
 	{
@@ -38,7 +38,7 @@ public class MicrobialGA
 	{
 		double sessionFitnessScore = evaluateFitness(score, piecesSurvied, time);
 		System.out.println("Session number: " + sessionCount + " teminated, neural network index: " 
-							+ activeNetworkIndex + " Session score: " + sessionFitnessScore);
+							+ activeNetworkIndex + ", Session score: " + sessionFitnessScore);
 		trialFitnessScore[sessionCount] = sessionFitnessScore;
 		sessionCount++;
 		if(sessionCount > MAX_SESSION_COUNT)
@@ -49,7 +49,7 @@ public class MicrobialGA
 	
 	private void teminateTrial()
 	{
-		System.out.print("Trial termination on population index" + activeNetworkIndex + " ");
+		System.out.print("Trial termination on population index: " + activeNetworkIndex + ",");
 		double averageFitness = 0;
 		for(int i = 0; i < trialFitnessScore.length; i++)
 		{
@@ -57,7 +57,7 @@ public class MicrobialGA
 		}
 		averageFitness /= MAX_SESSION_COUNT;
 		population.get(activeNetworkIndex).setFitness(averageFitness);
-		System.out.println("fitness score: " + averageFitness);
+		System.out.println(" Fitness score: " + averageFitness);
 		sessionCount = 0;
 		stageCount++;
 		if(stageCount > 1)
