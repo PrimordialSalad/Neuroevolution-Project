@@ -12,13 +12,12 @@ public class MicrobialGA
 	private int competitorNetworkIndex;
 	private final int MUTATION_RATE = 1;
 	private final int CROSSOVER_RATE = 50;
-	private double survalTimeFitnessWeight;
-	private double piecesSurvivedFitnessWeight;
-	private double scoreFitnessWeight;
+	private final double PIECES_SURVIVED_FITNESS_WEIGHT = 1;
+	private double SCORE_FITNESS_WEIGHT = 15;
 	private double[] trialFitnessScore = {0, 0, 0};
 	private int sessionCount;
 	private int stageCount;
-	private final int MAX_SESSION_COUNT = 2;
+	private final int MAX_SESSION_COUNT = 1;
 
 	public MicrobialGA(int setPopulationCount, int setInputCount, int setOutputCount, int setHiddenLayerCount, int setNeuronsPerHiddenLayer)
 	{
@@ -34,9 +33,9 @@ public class MicrobialGA
 		return population.get(activeNetworkIndex).activate(input);
 	}
 	
-	public void teminateSession(double score, double piecesSurvied, double time)
+	public void teminateSession(double score, double piecesSurvived)
 	{
-		double sessionFitnessScore = evaluateFitness(score, piecesSurvied, time);
+		double sessionFitnessScore = evaluateFitness(score, piecesSurvived);
 		System.out.println("Session number: " + sessionCount + " teminated, neural network index: " 
 							+ activeNetworkIndex + ", Session score: " + sessionFitnessScore);
 		trialFitnessScore[sessionCount] = sessionFitnessScore;
@@ -47,6 +46,11 @@ public class MicrobialGA
 		}
 	}
 	
+	public double evaluateFitness(double score, double piecesSurvived)
+	{
+		return score * SCORE_FITNESS_WEIGHT + piecesSurvived * PIECES_SURVIVED_FITNESS_WEIGHT;
+	}
+	
 	private void teminateTrial()
 	{
 		System.out.print("Trial termination on population index: " + activeNetworkIndex + ",");
@@ -55,7 +59,7 @@ public class MicrobialGA
 		{
 			averageFitness += trialFitnessScore[i];
 		}
-		averageFitness /= MAX_SESSION_COUNT;
+		averageFitness /= (MAX_SESSION_COUNT + 1);
 		population.get(activeNetworkIndex).setFitness(averageFitness);
 		System.out.println(" Fitness score: " + averageFitness);
 		sessionCount = 0;
@@ -87,10 +91,6 @@ public class MicrobialGA
 		}
 	}
 	
-	public double evaluateFitness(double score, double piecesSurvived, double time)
-	{
-		return score * scoreFitnessWeight + piecesSurvived * piecesSurvivedFitnessWeight + time * survalTimeFitnessWeight;
-	}
 	
 	public void selectGenes()
 	{
@@ -117,7 +117,6 @@ public class MicrobialGA
 			if(random.nextInt(100) < CROSSOVER_RATE)
 			{
 				double newChromosome = winnerGene.get(i);
-				System.out.println("Crossover at gene index: " + i + ", now set to: " + newChromosome);
 				loserGene.set(i, newChromosome);
 			}
 		}
@@ -134,7 +133,6 @@ public class MicrobialGA
 			if(random.nextInt(100) < MUTATION_RATE)
 			{
 				double newChromosome = random.nextDouble() * (1.0-(-1.0)) - 1.0;
-				System.out.println("Mutation at gene index: " + i + ", now set to: " + newChromosome);
 				nnGene.set(i, newChromosome);
 			}
 		}
